@@ -1,50 +1,49 @@
 package fr.wildcodeschool.jsonbiere;
 
 
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import javax.json.*;
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import java.util.Scanner;
 
 
 public class Biere {
 
-    int id ;
-    String name;
-    String first_brewed;
-    String description;
+    static Scanner entree = new Scanner(System.in);
 
-    Array ingredients;
+    private int id ;
+    private String name;
+    private String first_brewed;
+    private String description;
+    private Ingredient ingredient;
+    private static List<Biere> listeBiere = new ArrayList<>();
 
-    public static void main(String[]args) throws IOException {
+    public static void main(String... args) throws IOException {
 
-        JsonArray jsonArray = fromURL();
-        List<Biere> bieresObj = new ArrayList<>();
 
-        for (int i = 0 ; i < jsonArray.size(); i++){
-            JsonObject jsonObject = jsonArray.getJsonObject(i);
+        listeBiere = constructionListe();
 
-            Biere biere = new Biere(jsonObject);
-            bieresObj.add(biere);
+        for (Biere b : listeBiere) {
+        System.out.println("\nRéference : " + b.getId()
+                + "\nThe beer " + b.getName()
+                + " was brewed in " + b.getFirst_brewed()
+                + "\n" + b.getDescription());
+
+        System.out.print("Malt : ");
+        for(Malt m : b.ingredient.malt) {
+            System.out.print(m.getName() + ", ");
+        }
+        System.out.println("\n" + b.ingredient.getYeast());
+        System.out.println("");
 
         }
 
-
-        for (Biere b : bieresObj) {
-            System.out.println("\nRéference : " + b.getId()
-                    + "\nThe beer " + b.getName()
-                    + " was brewed in " + b.getFirst_brewed()
-                    + "\n" + b.getDescription());
-
-            
-        }
     }
 
 
@@ -55,6 +54,7 @@ public class Biere {
         setName(jsonObject.getString("name"));
         setFirst_brewed(jsonObject.getString("first_brewed"));
         setDescription(jsonObject.getString("description"));
+        setIngredient(jsonObject.getJsonObject("ingredients"));
 
 
     }
@@ -87,27 +87,84 @@ public class Biere {
         this.description = description;
     }
 
-    public Array getIngredients() {
-        return ingredients;
+    public Object getIngredient() {
+        return ingredient;
     }
 
-    public void setIngredients(Array ingredients) {
-        this.ingredients = ingredients;
+    public void setIngredient(JsonObject ingredient) {
+        this.ingredient =  new Ingredient(ingredient);
     }
 
-    private static JsonArray fromURL() throws IOException,javax.json.JsonException {
+    private static List<Biere> constructionListe() throws IOException {
+        JsonArray jsonArray = recupereLaListe();
+        List<Biere> listeBiere = new ArrayList<>();
 
-        URL url = new URL("https://api.punkapi.com/v2/beers ");
+        for (int i = 0 ; i < jsonArray.size(); i++){
+            JsonObject jsonObject = jsonArray.getJsonObject(i);
+
+            Biere biere = new Biere(jsonObject);
+            listeBiere.add(biere);
+
+        }
+
+        return listeBiere;
+    }
+
+    private static JsonArray recupereLaListe() throws IOException {
+
+        URL url = new URL("https://api.punkapi.com/v2/beers?page=1&per_page=80");
         InputStream streamUrl = url.openStream();
 
         JsonReader reader =  Json.createReader(streamUrl);
-
         JsonArray jsonArray = reader.readArray();
 
         reader.close();
         streamUrl.close();
         return jsonArray;
 
+    }
+
+    public static int rechercheParNom(String rechercheNom) throws IOException {
+
+        List<Biere> Bieres = constructionListe();
+
+        for (Biere b : Bieres) {
+            if (b.getName().equals(rechercheNom) ){
+                //print(b);
+                return b.getId();
+
+            }
+        }
+        return -1;
+    }
+
+    public static String rechercheParId(int rechercheId) throws IOException {
+
+        List<Biere> Bieres = constructionListe();
+
+        for (Biere b : Bieres) {
+            if (b.getId() == rechercheId){
+                print(b);
+                return b.getName();
+
+            }
+
+        }
+
+        return null;
+    }
+
+    public static String print(Biere biere){
+        String pourAfficher = "";
+
+        pourAfficher += biere.getName();
+        /*pourAfficher += "Ingredients de la biere : " + biere.getName();
+        pourAfficher += "\nMalt : ";
+        for(Malt m : biere.ingredient.malt) {
+            pourAfficher += m.getName() + ", ";
+        }
+        pourAfficher += "\n" + biere.ingredient.getYeast() + "\n";*/
+        return pourAfficher;
     }
 
 
