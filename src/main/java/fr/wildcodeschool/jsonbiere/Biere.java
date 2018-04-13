@@ -30,20 +30,8 @@ public class Biere {
         listeBiere = constructionListe();
 
         for (Biere b : listeBiere) {
-        System.out.println("\nRéference : " + b.getId()
-                + "\nThe beer " + b.getName()
-                + " was brewed in " + b.getFirst_brewed()
-                + "\n" + b.getDescription());
-
-        System.out.print("Malt : ");
-        for(Malt m : b.ingredient.malt) {
-            System.out.print(m.getName() + ", ");
+            print(b);
         }
-        System.out.println("\n" + b.ingredient.getYeast());
-        System.out.println("");
-
-        }
-
     }
 
 
@@ -132,10 +120,9 @@ public class Biere {
             if (b.getName().equals(rechercheNom) ){
                 //print(b);
                 return b.getId();
-
             }
         }
-        return -1;
+        return 0;
     }
 
     public static String rechercheParId(int rechercheId) throws IOException {
@@ -144,26 +131,31 @@ public class Biere {
 
         for (Biere b : Bieres) {
             if (b.getId() == rechercheId){
-                print(b);
+                System.out.println(print(b));
                 return b.getName();
-
             }
-
         }
-
         return null;
     }
 
     public static String print(Biere biere){
         String pourAfficher = "";
 
-        pourAfficher += biere.getName();
-        /*pourAfficher += "Ingredients de la biere : " + biere.getName();
-        pourAfficher += "\nMalt : ";
+        System.out.println("\nRéference : " + biere.getId()
+                + "\nThe beer " + biere.getName()
+                + " was brewed in " + biere.getFirst_brewed()
+                + "\n" + biere.getDescription());
+
+        System.out.println("Malt :");
         for(Malt m : biere.ingredient.malt) {
-            pourAfficher += m.getName() + ", ";
+            System.out.println(m.getName() + " : ");
+            System.out.println("\tUnité " + m.getAmount().getValue());
+            System.out.println("\tValeur " + m.getAmount().getUnit());
+
         }
-        pourAfficher += "\n" + biere.ingredient.getYeast() + "\n";*/
+        System.out.println("\n" + biere.ingredient.getYeast());
+        System.out.println("");
+
         return pourAfficher;
     }
 

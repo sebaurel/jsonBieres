@@ -12,7 +12,7 @@ public class BiereTest {
 
     @Test
     public void testId() throws IOException {
-       assertEquals("Buzz", Biere.rechercheParId(1));
+       assertEquals("Magic Stone Dog (w/Magic Rock & Stone Brewing Co.)", Biere.rechercheParId(61));
     }
 
     @Test
