@@ -3,6 +3,7 @@ package fr.wildcodeschool.jsonbiere;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,23 +21,29 @@ public class Biere {
     String first_brewed;
     String description;
 
+    Array ingredients;
+
     public static void main(String[]args) throws IOException {
 
         JsonArray jsonArray = fromURL();
-        List<JsonObject> bieres = new ArrayList();
+        List<Biere> bieresObj = new ArrayList<>();
 
         for (int i = 0 ; i < jsonArray.size(); i++){
             JsonObject jsonObject = jsonArray.getJsonObject(i);
 
-            bieres.add(jsonObject);
+            Biere biere = new Biere(jsonObject);
+            bieresObj.add(biere);
+
         }
 
 
-        for (JsonObject b : bieres) {
-            System.out.println("\nRéference : " + b.getInt("id")
-                    + "\nThe beer " + b.getString("name")
-                    + " was brewed in " + b.getString("first_brewed")
-                    + "\n" + b.getString("description"));
+        for (Biere b : bieresObj) {
+            System.out.println("\nRéference : " + b.getId()
+                    + "\nThe beer " + b.getName()
+                    + " was brewed in " + b.getFirst_brewed()
+                    + "\n" + b.getDescription());
+
+            
         }
     }
 
@@ -59,6 +66,7 @@ public class Biere {
     public void setId(int id) {
         this.id = id;
     }
+
     public String getName() {
         return name;
     }
@@ -71,13 +79,20 @@ public class Biere {
     public void setFirst_brewed(String first_brewed) {
         this.first_brewed = first_brewed;
     }
-
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Array getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(Array ingredients) {
+        this.ingredients = ingredients;
     }
 
     private static JsonArray fromURL() throws IOException,javax.json.JsonException {
