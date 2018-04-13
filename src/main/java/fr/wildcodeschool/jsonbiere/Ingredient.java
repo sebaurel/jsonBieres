@@ -7,8 +7,8 @@ import java.util.List;
 
 public class Ingredient {
 
-    String yeast;
-    List<Malt> malt;
+    protected String yeast;
+    protected List<Malt> malt;
 
     public Ingredient(JsonObject ingredient) {
         setYeast(ingredient.getString("yeast"));

@@ -138,6 +138,21 @@ public class Biere {
         return null;
     }
 
+    public static String rechercheParIngredient(String rechercheIngredient, double rechercheQuantite) throws IOException {
+
+        List<Biere> Bieres = constructionListe();
+
+        for (Biere b : Bieres) {
+            for(Malt m : b.ingredient.malt) {
+                if (m.getName().equals(rechercheIngredient) && m.amount.getValue() >= rechercheQuantite){
+                    System.out.println(print(b));
+                    return b.getName();
+                }
+            }
+        }
+        return null;
+    }
+
     public static String print(Biere biere){
         String pourAfficher = "";
 

@@ -19,4 +19,9 @@ public class BiereTest {
     public void testNom() throws IOException {
         assertEquals(80, Biere.rechercheParNom("AB:04"));
     }
+
+    @Test
+    public void testongredient() throws IOException {
+        assertEquals("Buzz", Biere.rechercheParIngredient("Maris Otter Extra Pale", 2.0));
+    }
 }
