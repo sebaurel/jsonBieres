@@ -20,6 +20,9 @@ public class BiereTest {
                "\tRye : 0.19 kilograms\n" +
                "\tFlaked Oats : 0.44 kilograms\n" +
                "\tAmber : 0.19 kilograms\n" +
+               "Hops :\n" +
+               "\tSimcoe : 25.0 grams\n" +
+               "\tAmarillo : 25.0 grams\n" +
                "Yeast : Wyeast 3711 - French Saison™", Biere.rechercheParId(61));
     }
 
@@ -30,17 +33,22 @@ public class BiereTest {
 
     @Test
     public void testNom() throws IOException {
-        assertEquals("\nRéference : 80" +
-                "\nThe beer AB:04 was brewed in 08/2010" +
-                "\nImperial Stout brewed with coffee, cocoa, Naga chillies (the hottest in the world), and champagne yeast. Possibly our most acclaimed Abstrakt yet." +
-                "\nMalt :" +
-                "\n\tPale Ale Malt : 10.0 kilograms" +
-                "\n\tWheat Malt : 0.94 kilograms" +
-                "\n\tFlaked Oat Malt : 1.88 kilograms" +
-                "\n\tDark Crystal 350 : 1.25 kilograms" +
-                "\n\tChocolate : 0.94 kilograms" +
-                "\n\tBlack Patent : 0.94 kilograms" +
-                "\nYeast : Wyeast 1272 - American Ale II™", Biere.rechercheParNom("AB:04"));
+        assertEquals("\nRéference : 80\n" +
+                "The beer AB:04 was brewed in 08/2010\n" +
+                "Imperial Stout brewed with coffee, cocoa, Naga chillies (the hottest in the world), and champagne yeast. Possibly our most acclaimed Abstrakt yet.\n" +
+                "Malt :\n" +
+                "\tPale Ale Malt : 10.0 kilograms\n" +
+                "\tWheat Malt : 0.94 kilograms\n" +
+                "\tFlaked Oat Malt : 1.88 kilograms\n" +
+                "\tDark Crystal 350 : 1.25 kilograms\n" +
+                "\tChocolate : 0.94 kilograms\n" +
+                "\tBlack Patent : 0.94 kilograms\n" +
+                "Hops :\n" +
+                "\tFirst Gold : 75.0 grams\n" +
+                "\tFuggles : 75.0 grams\n" +
+                "\tFuggles : 62.5 grams\n" +
+                "\tCoffee Beans : 37.5 grams\n" +
+                "Yeast : Wyeast 1272 - American Ale II™", Biere.rechercheParNom("AB:04"));
     }
 
     @Test

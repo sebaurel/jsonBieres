@@ -22,7 +22,7 @@ public class Biere {
     private String name;
     private String first_brewed;
     private String description;
-    private Ingredient ingredient;
+    private Ingredients ingredients;
     private static List<Biere> listeBiere = new ArrayList<>();
 
 
@@ -33,7 +33,7 @@ public class Biere {
         setName(jsonObject.getString("name"));
         setFirst_brewed(jsonObject.getString("first_brewed"));
         setDescription(jsonObject.getString("description"));
-        setIngredient(jsonObject.getJsonObject("ingredients"));
+        setIngredients(jsonObject.getJsonObject("ingredients"));
 
 
     }
@@ -66,12 +66,12 @@ public class Biere {
         this.description = description;
     }
 
-    public Object getIngredient() {
-        return ingredient;
+    public Object getIngredients() {
+        return ingredients;
     }
 
-    public void setIngredient(JsonObject ingredient) {
-        this.ingredient =  new Ingredient(ingredient);
+    public void setIngredients(JsonObject ingredients) {
+        this.ingredients =  new Ingredients(ingredients);
     }
 
     /*private static List<Biere> recupereToutesLesBieres() throws IOException {
@@ -112,6 +112,7 @@ public class Biere {
         List<Biere> listeBiere = new ArrayList<>();
         Biere biere = null;
         JsonArray jsonArray = null;
+
         while (uneBiere) {
             String urlBiere = "https://api.punkapi.com/v2/beers?page=" + page + "&per_page=80 ";
             URL url = null;
@@ -124,7 +125,6 @@ public class Biere {
                 InputStream streamUrl = url.openStream();
                 JsonReader reader = Json.createReader(streamUrl);
                 jsonArray = reader.readArray();
-
 
                 for (int i = 0 ; i < jsonArray.size() ; i++){
                     JsonObject jsonObject = jsonArray.getJsonObject(i);
@@ -142,10 +142,48 @@ public class Biere {
                 uneBiere = false;
             }
         }
-        return listeBiere;
 
+        return listeBiere;
     }
 
+
+    private static String formatBiere(Biere biere){
+        String pourAfficher = "";
+
+        pourAfficher += "\nRéference : " + biere.getId()
+                + "\nThe beer " + biere.getName() + " was brewed in " + biere.getFirst_brewed()
+                + "\n" + biere.getDescription();
+
+        pourAfficher += "\nMalt :";
+        for(Malt m : biere.ingredients.malt) {
+            pourAfficher += "\n\t" + m.getName() + " : " + m.getAmount().getValue() + " " + m.getAmount().getUnit();
+        }
+        pourAfficher += "\nHops :";
+        for(Hops h : biere.ingredients.hops) {
+            pourAfficher += "\n\t" + h.getName() + " : " + h.getAmount().getValue() + " " + h.getAmount().getUnit();
+        }
+        pourAfficher += "\nYeast : " + biere.ingredients.getYeast();
+
+        if (pourAfficher == ""){
+            return "No beer";
+        }
+        else{
+            return pourAfficher;
+        }
+    }
+
+    private static String formatListe(List<Biere> listeBiere){
+        String pourAfficher = "";
+        for (Biere b : listeBiere) {
+            pourAfficher += "- " + b.getId()+ " -> "+b.getName() + "\n";
+        }
+        if (pourAfficher == ""){
+            return "No beer";
+        }
+        else{
+            return pourAfficher;
+        }
+    }
 
     public static String rechercheParNom(String rechercheNom) throws IOException {
 
@@ -193,46 +231,12 @@ public class Biere {
         listeBiere = recupereToutesLesBieresParPaquet();
         List<Biere> bieresAvecIngredient = new ArrayList<>();
         for (Biere b : listeBiere) {
-            for(Malt m : b.ingredient.malt) {
+            for(Malt m : b.ingredients.malt) {
                 if (m.getName().equals(rechercheIngredient) && m.amount.getValue() >= rechercheQuantite){
                     bieresAvecIngredient.add(b);
                 }
             }
         }
         return formatListe(bieresAvecIngredient);
-    }
-
-    private static String formatBiere(Biere biere){
-        String pourAfficher = "";
-
-        pourAfficher += "\nRéference : " + biere.getId()
-                + "\nThe beer " + biere.getName() + " was brewed in " + biere.getFirst_brewed()
-                + "\n" + biere.getDescription();
-
-        pourAfficher += "\nMalt :";
-        for(Malt m : biere.ingredient.malt) {
-            pourAfficher += "\n\t" + m.getName() + " : " + m.getAmount().getValue() + " " + m.getAmount().getUnit();
-        }
-        pourAfficher += "\nYeast : " + biere.ingredient.getYeast();
-
-        if (pourAfficher == ""){
-            return "No beer";
-        }
-        else{
-            return pourAfficher;
-        }
-    }
-
-    private static String formatListe(List<Biere> listeBiere){
-        String pourAfficher = "";
-        for (Biere b : listeBiere) {
-            pourAfficher += "- " + b.getId()+ " -> "+b.getName() + "\n";
-        }
-        if (pourAfficher == ""){
-            return "No beer";
-        }
-        else{
-            return pourAfficher;
-        }
     }
 }
