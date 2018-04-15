@@ -11,9 +11,14 @@ public class Ingredient {
     protected List<Malt> malt;
 
     public Ingredient(JsonObject ingredient) {
-        setYeast(ingredient.getString("yeast"));
-        setMalt(ingredient.getJsonArray("malt"));
+        try {
+            setYeast(ingredient.getString("yeast"));
+        }
+        catch (java.lang.ClassCastException e){
+            yeast = null;
+        }
 
+        setMalt(ingredient.getJsonArray("malt"));
     }
 
     public String getYeast() {

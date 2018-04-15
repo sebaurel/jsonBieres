@@ -7,6 +7,7 @@ import javax.json.JsonObject;
 import javax.json.JsonReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,16 +24,6 @@ public class Biere {
     private String description;
     private Ingredient ingredient;
     private static List<Biere> listeBiere = new ArrayList<>();
-
-    public static void main(String... args) throws IOException {
-
-
-        listeBiere = constructionListe();
-
-        for (Biere b : listeBiere) {
-            print(b);
-        }
-    }
 
 
     private Biere(JsonObject jsonObject) {
@@ -83,96 +74,165 @@ public class Biere {
         this.ingredient =  new Ingredient(ingredient);
     }
 
-    private static List<Biere> constructionListe() throws IOException {
-        JsonArray jsonArray = recupereLaListe();
+    /*private static List<Biere> recupereToutesLesBieres() throws IOException {
+        int i = 1;
+        boolean uneBiere = true;
         List<Biere> listeBiere = new ArrayList<>();
-
-        for (int i = 0 ; i < jsonArray.size(); i++){
-            JsonObject jsonObject = jsonArray.getJsonObject(i);
-
-            Biere biere = new Biere(jsonObject);
-            listeBiere.add(biere);
-
+        Biere biere = null;
+        while (uneBiere) {
+            String urlBiere = "https://api.punkapi.com/v2/beers/" + i;
+            URL url = null;
+            try {
+                url = new URL(urlBiere);
+            } catch (MalformedURLException e) {
+                uneBiere = false;
+            }
+            InputStream streamUrl = null;
+            try {
+                streamUrl = url.openStream();
+                JsonReader reader = Json.createReader(streamUrl);
+                JsonArray jsonArray = reader.readArray();
+                JsonObject jsonObject = jsonArray.getJsonObject(0);
+                biere = new Biere(jsonObject);
+                listeBiere.add(biere);
+            }
+            catch (java.io.FileNotFoundException e){
+                uneBiere = false;
+            }
+            i++;
         }
-
         return listeBiere;
-    }
 
-    private static JsonArray recupereLaListe() throws IOException {
+    }*/
 
-        URL url = new URL("https://api.punkapi.com/v2/beers?page=1&per_page=80");
-        InputStream streamUrl = url.openStream();
+    private static List<Biere> recupereToutesLesBieresParPaquet() throws IOException {
 
-        JsonReader reader =  Json.createReader(streamUrl);
-        JsonArray jsonArray = reader.readArray();
+        boolean uneBiere = true;
+        int page = 1;
+        List<Biere> listeBiere = new ArrayList<>();
+        Biere biere = null;
+        JsonArray jsonArray = null;
+        while (uneBiere) {
+            String urlBiere = "https://api.punkapi.com/v2/beers?page=" + page + "&per_page=80 ";
+            URL url = null;
+            try {
+                url = new URL(urlBiere);
+            } catch (MalformedURLException e) {
+                uneBiere = false;
+            }
+            try {
+                InputStream streamUrl = url.openStream();
+                JsonReader reader = Json.createReader(streamUrl);
+                jsonArray = reader.readArray();
 
-        reader.close();
-        streamUrl.close();
-        return jsonArray;
 
-    }
-
-    public static int rechercheParNom(String rechercheNom) throws IOException {
-
-        List<Biere> Bieres = constructionListe();
-
-        for (Biere b : Bieres) {
-            if (b.getName().equals(rechercheNom) ){
-                //print(b);
-                return b.getId();
+                for (int i = 0 ; i < jsonArray.size() ; i++){
+                    JsonObject jsonObject = jsonArray.getJsonObject(i);
+                    biere = new Biere(jsonObject);
+                    //System.out.println(biere.getName());
+                    listeBiere.add(biere);
+                }
+                if(jsonArray.size() == 0 ){
+                    uneBiere = false;
+                }
+                else{
+                    page++;
+                }
+            } catch (java.io.FileNotFoundException e) {
+                uneBiere = false;
             }
         }
-        return 0;
+        return listeBiere;
+
+    }
+
+
+    public static String rechercheParNom(String rechercheNom) throws IOException {
+
+        listeBiere = recupereToutesLesBieresParPaquet();
+        Biere biere = null;
+        boolean found = false;
+
+        for (Biere b : listeBiere) {
+            if (b.getName().equals(rechercheNom) ){
+                biere = b;
+                found = true;
+            }
+        }
+
+        if (found) {
+            return formatBiere(biere);
+        }
+        else{
+            return "No beer";
+        }
     }
 
     public static String rechercheParId(int rechercheId) throws IOException {
 
-        List<Biere> Bieres = constructionListe();
-
-        for (Biere b : Bieres) {
+        listeBiere = recupereToutesLesBieresParPaquet();
+        Biere biere = null;
+        boolean found = false;
+        for (Biere b : listeBiere) {
             if (b.getId() == rechercheId){
-                System.out.println(print(b));
-                return b.getName();
+                biere = b;
+                found = true;
             }
         }
-        return null;
+
+        if (found) {
+            return formatBiere(biere);
+        }
+        else{
+            return "No beer";
+        }
     }
 
     public static String rechercheParIngredient(String rechercheIngredient, double rechercheQuantite) throws IOException {
 
-        List<Biere> Bieres = constructionListe();
-
-        for (Biere b : Bieres) {
+        listeBiere = recupereToutesLesBieresParPaquet();
+        List<Biere> bieresAvecIngredient = new ArrayList<>();
+        for (Biere b : listeBiere) {
             for(Malt m : b.ingredient.malt) {
                 if (m.getName().equals(rechercheIngredient) && m.amount.getValue() >= rechercheQuantite){
-                    System.out.println(print(b));
-                    return b.getName();
+                    bieresAvecIngredient.add(b);
                 }
             }
         }
-        return null;
+        return formatListe(bieresAvecIngredient);
     }
 
-    public static String print(Biere biere){
+    private static String formatBiere(Biere biere){
         String pourAfficher = "";
 
-        System.out.println("\nRéference : " + biere.getId()
-                + "\nThe beer " + biere.getName()
-                + " was brewed in " + biere.getFirst_brewed()
-                + "\n" + biere.getDescription());
+        pourAfficher += "\nRéference : " + biere.getId()
+                + "\nThe beer " + biere.getName() + " was brewed in " + biere.getFirst_brewed()
+                + "\n" + biere.getDescription();
 
-        System.out.println("Malt :");
+        pourAfficher += "\nMalt :";
         for(Malt m : biere.ingredient.malt) {
-            System.out.println(m.getName() + " : ");
-            System.out.println("\tUnité " + m.getAmount().getValue());
-            System.out.println("\tValeur " + m.getAmount().getUnit());
-
+            pourAfficher += "\n\t" + m.getName() + " : " + m.getAmount().getValue() + " " + m.getAmount().getUnit();
         }
-        System.out.println("\n" + biere.ingredient.getYeast());
-        System.out.println("");
+        pourAfficher += "\nYeast : " + biere.ingredient.getYeast();
 
-        return pourAfficher;
+        if (pourAfficher == ""){
+            return "No beer";
+        }
+        else{
+            return pourAfficher;
+        }
     }
 
-
+    private static String formatListe(List<Biere> listeBiere){
+        String pourAfficher = "";
+        for (Biere b : listeBiere) {
+            pourAfficher += "- " + b.getId()+ " -> "+b.getName() + "\n";
+        }
+        if (pourAfficher == ""){
+            return "No beer";
+        }
+        else{
+            return pourAfficher;
+        }
+    }
 }
