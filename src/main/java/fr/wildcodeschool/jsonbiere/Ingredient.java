@@ -1,17 +1,14 @@
 package fr.wildcodeschool.jsonbiere;
 
-import javax.json.JsonObject;
-
 
 
 abstract class Ingredient {
     private String name;
     protected Amount amount;
 
-    public Ingredient(JsonObject malt) {
-        setName(malt.getString("name"));
-        setAmount(malt.getJsonObject("amount"));
+    protected Ingredient() {
     }
+
 
     public String getName() {
         return name;
@@ -25,11 +22,17 @@ abstract class Ingredient {
         return amount;
     }
 
-    public void setAmount(JsonObject jsonAmount) {
+    public void setAmount(String unit, double value) {
 
-
-        Amount amount = new Amount(jsonAmount);
-
-        this.amount = amount;
+        this.amount = new Amount(unit, value);
     }
+
+
+    /*public Yeast getYeast() {
+        return yeast;
+    }
+
+    public void setYeast(String yeast) {
+        this.yeast = new Yeast(yeast);
+    }*/
 }

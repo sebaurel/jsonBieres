@@ -23,12 +23,12 @@ public class BiereTest {
                "Hops :\n" +
                "\tSimcoe : 25.0 grams\n" +
                "\tAmarillo : 25.0 grams\n" +
-               "Yeast : Wyeast 3711 - French Saison™", Biere.rechercheParId(61));
+               "Yeast : Wyeast 3711 - French Saison™", DAOJsonRecherche.rechercheBiere(61));
     }
 
     @Test
     public void testIdHorsZone() throws IOException {
-        assertEquals("No beer", Biere.rechercheParId(250));
+        assertEquals("No beer", DAOJsonRecherche.rechercheBiere(250));
     }
 
     @Test
@@ -48,12 +48,12 @@ public class BiereTest {
                 "\tFuggles : 75.0 grams\n" +
                 "\tFuggles : 62.5 grams\n" +
                 "\tCoffee Beans : 37.5 grams\n" +
-                "Yeast : Wyeast 1272 - American Ale II™", Biere.rechercheParNom("AB:04"));
+                "Yeast : Wyeast 1272 - American Ale II™", DAOJsonRecherche.rechercheBiere("AB:04"));
     }
 
     @Test
     public void testNomFaux() throws IOException {
-        assertEquals("No beer", Biere.rechercheParNom("Street - beer02"));
+        assertEquals("No beer", DAOJsonRecherche.rechercheBiere("Street - beer02"));
     }
 
     @Test
@@ -66,11 +66,11 @@ public class BiereTest {
                 "- 102 -> Peach Therapy\n" +
                 "- 144 -> Tokyo*\n" +
                 "- 150 -> AB:13\n" +
-                "- 185 -> Tactical Nuclear Penguin\n", Biere.rechercheParIngredient("Extra Pale", 10.0));
+                "- 185 -> Tactical Nuclear Penguin\n", DAOJsonRecherche.rechercheBiere("Extra Pale", 10.0));
     }
 
     @Test
     public void testIngredientHorsImpossible() throws IOException {
-        assertEquals("No beer", Biere.rechercheParIngredient("Crystal 150", 5.8));
+        assertEquals("No beer", DAOJsonRecherche.rechercheBiere("Crystal 150", 5.8));
     }
 }

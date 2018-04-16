@@ -1,15 +1,14 @@
 package fr.wildcodeschool.jsonbiere;
 
-import javax.json.JsonObject;
 
 public class Amount {
 
-    double value;
-    String unit;
+    private double value;
+    private String unit;
 
-    public Amount(JsonObject amount) {
-        setValue(amount.getJsonNumber("value").doubleValue());
-        setUnit(amount.getString("unit"));
+    public Amount(String unit, double value) {
+        setValue(value);
+        setUnit(unit);
     }
 
     public double getValue() {
