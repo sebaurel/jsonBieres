@@ -1,6 +1,7 @@
 package fr.wildcodeschool.jsonbiere;
 
 import java.util.List;
+import java.util.Map;
 
 public class Biere {
 
@@ -8,7 +9,7 @@ public class Biere {
     private String name;
     private String firstBrewed;
     private String description;
-    private List<List<Ingredient>> ingredients;
+    private Map<String, List<Ingredient>> ingredients;
 
 
     protected Biere() {
@@ -45,11 +46,11 @@ public class Biere {
         this.description = description;
     }
 
-    public List<List<Ingredient>> getIngredients() {
+    public Map getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(List<List<Ingredient>> ingredients) {
+    public void setIngredients(Map<String, List<Ingredient>> ingredients) {
         this.ingredients = ingredients;
     }
 

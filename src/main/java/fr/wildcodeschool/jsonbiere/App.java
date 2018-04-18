@@ -1,21 +1,34 @@
 package fr.wildcodeschool.jsonbiere;
 
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Hello world!
  *
  */
-public class App 
-{
+public class App {
     public static void main( String[] args ) throws IOException {
 
-        //List<Biere> listeBiere = DAOJsonConnect.recupereToutesLesBieresJson();
+        //recupere toute les bieres
+        //List<Biere> listeBiere = DAOJsonRecherche.rechercheBiere();
         //System.out.println(formatListe(listeBiere));
 
-        Biere biere = DAOJsonRecherche.rechercheBiere(61);
-        System.out.println(formatBiere(biere));
+        //recupere la biere avec l'id 61
+        //Biere biere = DAOJsonRecherche.rechercheBiere(61);
+        //System.out.println(formatBiere(biere));
+
+        //recupere les bieres contenant le mot beer
+        //List<Biere> listeBiere = DAOJsonRecherche.rechercheBiere("Weisse");
+        //System.out.println(formatListe(listeBiere));
+
+        //recupere les bieres contenant les ingredients
+        List<Biere> listeBiere = DAOJsonRecherche.rechercheBiere("Extra Pale", 6.0);
+        System.out.println(formatListe(listeBiere));
+
 
     }
 
@@ -27,51 +40,35 @@ public class App
                 + "\nThe beer " + biere.getName() + " was brewed in " + biere.getFirstBrewed()
                 + "\n" + biere.getDescription();
 
-        pourAfficher += "\nMalt :";
-        for (int j = 0 ; j < biere.getIngredients().get(0).size() ; j++) {
+        pourAfficher += "\nIngredients :";
 
-            //System.out.println(biere.getIngredients().get(i).get(j).toString());
-            pourAfficher += "\n\t" + biere.getIngredients().get(0).get(j).getName() + " : " + biere.getIngredients().get(0).get(j).amount.getValue() + " " + biere.getIngredients().get(0).get(j).amount.getUnit();
-        }
 
-        pourAfficher += "\nHops :";
-        for (int j = 0 ; j < biere.getIngredients().get(1).size() ; j++) {
+        Iterator<Map.Entry<String, List<Ingredient>>> iterator = biere.getIngredients().entrySet().iterator();
+        while (iterator.hasNext()){
+            Map.Entry<String, List<Ingredient>> entry = iterator.next();
+            pourAfficher += "\n\t" + entry.getKey() + " : ";
 
-            //System.out.println(biere.getIngredients().get(i).get(j).toString());
-            pourAfficher += "\n\t" + biere.getIngredients().get(1).get(j).getName() + " : " + biere.getIngredients().get(1).get(j).amount.getValue() + " " + biere.getIngredients().get(1).get(j).amount.getUnit();
-        }
+            for (Ingredient list : entry.getValue()) {
+                pourAfficher += "\n\t\t" + list.getName();
+                if (list.getAmount() != null) {
+                    pourAfficher += " : " + list.getAmount().getValue() + " " + list.getAmount().getUnit();
+                }
+            }
 
-        //pourAfficher += "\nYeast : " + biere.getIngredients().get(2).get(0).toString();
-        pourAfficher += "\nYeast : " + biere.getIngredients().get(2).get(0).getName();
-        //System.out.println(biere.getIngredients().get(2).getString("yeast");
-        /*for(Malt m : biere.getIngredients().get(0)) {
-            pourAfficher += "\n\t" + m.getName() + " : " + m.getAmount().getValue() + " " + m.getAmount().getUnit();
         }
-        pourAfficher += "\nHops :";
-        for(Hops h : biere.ingredients.hops) {
-            pourAfficher += "\n\t" + h.getName() + " : " + h.getAmount().getValue() + " " + h.getAmount().getUnit();
-        }
-        pourAfficher += "\nYeast : " + biere.ingredients.getYeast();*/
-
-        if (pourAfficher == ""){
-            return "No beer";
-        }
-        else{
             return pourAfficher;
-        }
+
     }
 
     protected static String formatListe(List<Biere> listeBiere){
         String pourAfficher = "";
-        for (Biere b : listeBiere) {
-            pourAfficher += "- " + b.getId()+ " -> "+b.getName() + "\n";
+        if ( listeBiere != null) {
+            for (Biere b : listeBiere) {
+                pourAfficher += "- " + b.getId() + " -> " + b.getName() + "\n";
+            }
         }
-        if (pourAfficher == ""){
-            return "No beer";
-        }
-        else{
-            return pourAfficher;
-        }
+        return pourAfficher;
+
     }
 
 }
