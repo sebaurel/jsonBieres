@@ -9,6 +9,7 @@ public class Biere {
     private String name;
     private String firstBrewed;
     private String description;
+    private String image_url;
     private Map<String, List<Ingredient>> ingredients;
 
 
@@ -44,6 +45,14 @@ public class Biere {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
     }
 
     public Map getIngredients() {

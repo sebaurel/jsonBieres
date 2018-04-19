@@ -66,6 +66,7 @@ public class DAOJsonConnect {
         biere.setName(jsonObject.getString("name"));
         biere.setFirstBrewed(jsonObject.getString("first_brewed"));
         biere.setDescription(jsonObject.getString("description"));
+        biere.setImage_url(jsonObject.getString("image_url"));
 
         JsonObject jsonObjectIngredients = jsonObject.getJsonObject("ingredients");
         Map<String, List<Ingredient>> mapIngredients = new LinkedHashMap<>();
