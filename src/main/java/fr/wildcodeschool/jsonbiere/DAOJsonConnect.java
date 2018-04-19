@@ -121,6 +121,7 @@ public class DAOJsonConnect {
 
         return biere;
     }
+
     private static Amount buildAmount(JsonObject jsonAmount){
 
         String amountUnit = jsonAmount.getString("unit");

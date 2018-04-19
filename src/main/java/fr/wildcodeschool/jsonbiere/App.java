@@ -13,23 +13,44 @@ import java.util.Map;
 public class App {
     public static void main( String[] args ) throws IOException {
 
-        //recupere toute les bieres
-        //List<Biere> listeBiere = DAOJsonRecherche.rechercheBiere();
-        //System.out.println(formatListe(listeBiere));
-
-        //recupere la biere avec l'id 61
-        //Biere biere = DAOJsonRecherche.rechercheBiere(61);
-        //System.out.println(formatBiere(biere));
-
-        //recupere les bieres contenant le mot beer
-        //List<Biere> listeBiere = DAOJsonRecherche.rechercheBiere("Weisse");
-        //System.out.println(formatListe(listeBiere));
-
-        //recupere les bieres contenant les ingredients
-        List<Biere> listeBiere = DAOJsonRecherche.rechercheBiere("Extra Pale", 6.0);
+ /*       //recupere toute les bieres
+        List<Biere> listeBiere = DAOJsonRecherche.rechercheBiere();
         System.out.println(formatListe(listeBiere));
 
+        //recupere la biere avec l'id 61
+        Biere biere = DAOJsonRecherche.rechercheBiere(61);
+        System.out.println(formatBiere(biere));
 
+        //recupere les bieres contenant le mot beer
+        List<Biere> listeBiere1 = DAOJsonRecherche.rechercheBiere("Weisse");
+        System.out.println(formatListe(listeBiere1));
+*/
+        //recupere les bieres contenant les ingredients
+        List<Biere> listeBiere2 = DAOJsonRecherche.rechercheBiere("Malt", "Extra Pale", 10.0);
+        System.out.println(formatListe(listeBiere2));
+
+
+    }
+
+    public static String rechercheParNom(String nom) throws IOException {
+        //recupere les bieres contenant le mot beer
+        List<Biere> listeBiere = DAOJsonRecherche.rechercheBiere(nom);
+        return(formatListe(listeBiere));
+
+    }
+    public static String rechercheParId(int id) throws IOException {
+        //recupere la biere avec l'id
+        Biere biere = DAOJsonRecherche.rechercheBiere(id);
+        if (biere != null) {
+            return biere.getName();
+        } else{
+            return null;
+        }
+    }
+    public static String rechercheParIngredient(String type, String nom, double id) throws IOException {
+        //recupere les bieres contenant les ingredients
+        List<Biere> listeBiere = DAOJsonRecherche.rechercheBiere(type, nom, id);
+        return(formatListe(listeBiere));
     }
 
 
@@ -56,7 +77,7 @@ public class App {
             }
 
         }
-            return pourAfficher;
+        return pourAfficher;
 
     }
 

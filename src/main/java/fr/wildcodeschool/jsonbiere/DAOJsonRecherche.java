@@ -2,7 +2,9 @@ package fr.wildcodeschool.jsonbiere;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class DAOJsonRecherche {
     private static List<Biere> listeBiere = new ArrayList<>();
@@ -20,8 +22,8 @@ public class DAOJsonRecherche {
         return rechercheParId(id);
 
     }
-    public static List<Biere> rechercheBiere(String ingredient, double quantite) throws IOException {
-        return rechercheParIngredient(ingredient, quantite);
+    public static List<Biere> rechercheBiere(String type, String ingredient, double quantite) throws IOException {
+        return rechercheParIngredient(type, ingredient, quantite);
 
     }
 
@@ -37,27 +39,36 @@ public class DAOJsonRecherche {
     private static Biere rechercheParId(int rechercheId) throws IOException {
         String recherche = "https://api.punkapi.com/v2/beers/" + rechercheId;
 
-        List<Biere> listeBiere = DAOJsonConnect.recupereLesBieresJson(recherche);
-        Biere biere = listeBiere.get(0);
 
+        List<Biere> listeBiere = DAOJsonConnect.recupereLesBieresJson(recherche);
+        Biere biere = null;
+        if(listeBiere.size()>0) {
+            biere = listeBiere.get(0);
+        }
         return biere;
 
     }
 
-    private static List<Biere> rechercheParIngredient(String rechercheIngredient, double rechercheQuantite) throws IOException {
+    private static List<Biere> rechercheParIngredient(String typeIngredient, String rechercheIngredient, double rechercheQuantite) throws IOException {
 
         listeBiere = DAOJsonConnect.recupereLesBieresJson("all");
         List<Biere> bieresAvecIngredient = new ArrayList<>();
         for (Biere b : listeBiere) {
-            for (int i = 0 ; i < b.getIngredients().size() ; i++){
 
+            Iterator<Map.Entry<String, List<Ingredient>>> iterator = b.getIngredients().entrySet().iterator();
 
-                //Revoir la selection des ingrediant en s'inspirant de la methode de l'app formatBiere
+            while (iterator.hasNext()){
+                Map.Entry<String, List<Ingredient>> entry = iterator.next();
+                if (entry.getKey() == typeIngredient){
 
-                Ingredient ingredient = (Ingredient)b.getIngredients().get(0);
+                    for (Ingredient list : entry.getValue()) {
 
-                if (ingredient.getName().equals(rechercheIngredient) && ingredient.getAmount().getValue() >= rechercheQuantite){
-                    bieresAvecIngredient.add(b);
+                        if (list.getAmount() != null) {
+                            if (list.getName().equals(rechercheIngredient) && list.getAmount().getValue() >= rechercheQuantite) {
+                                bieresAvecIngredient.add(b);
+                            }
+                        }
+                    }
                 }
             }
         }
