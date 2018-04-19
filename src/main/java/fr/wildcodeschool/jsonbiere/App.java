@@ -13,10 +13,10 @@ import java.util.Map;
 public class App {
     public static void main( String[] args ) throws IOException {
 
- /*       //recupere toute les bieres
-        List<Biere> listeBiere = DAOJsonRecherche.rechercheBiere();
-        System.out.println(formatListe(listeBiere));
-
+       //recupere toute une biere au hazard
+        Biere biere = DAOJsonRecherche.rechercheBiere();
+        System.out.println(formatBiere(biere));
+ /*
         //recupere la biere avec l'id 61
         Biere biere = DAOJsonRecherche.rechercheBiere(61);
         System.out.println(formatBiere(biere));
@@ -24,11 +24,11 @@ public class App {
         //recupere les bieres contenant le mot beer
         List<Biere> listeBiere1 = DAOJsonRecherche.rechercheBiere("Weisse");
         System.out.println(formatListe(listeBiere1));
-*/
+
         //recupere les bieres contenant les ingredients
         List<Biere> listeBiere2 = DAOJsonRecherche.rechercheBiere("Malt", "Extra Pale", 10.0);
         System.out.println(formatListe(listeBiere2));
-
+*/
 
     }
 

@@ -9,10 +9,18 @@ import java.util.Map;
 public class DAOJsonRecherche {
     private static List<Biere> listeBiere = new ArrayList<>();
 
+    public DAOJsonRecherche() {
+    }
 
-    public static List<Biere> rechercheBiere() throws IOException {
-        return DAOJsonConnect.recupereLesBieresJson("all");
+    public static Biere rechercheBiere() throws IOException {
+        String recherche = "https://api.punkapi.com/v2/beers/random";
 
+        List<Biere> listeBiere = DAOJsonConnect.recupereLesBieresJson(recherche);
+        Biere biere = null;
+        if(listeBiere.size()>0) {
+            biere = listeBiere.get(0);
+        }
+        return biere;
     }
     public static List<Biere> rechercheBiere(String nom) throws IOException {
         return rechercheParNom(nom);
