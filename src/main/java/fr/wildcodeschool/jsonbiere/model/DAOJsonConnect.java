@@ -1,5 +1,7 @@
-package fr.wildcodeschool.jsonbiere;
+package fr.wildcodeschool.jsonbiere.model;
 
+
+import fr.wildcodeschool.jsonbiere.*;
 
 import javax.json.Json;
 import javax.json.JsonArray;

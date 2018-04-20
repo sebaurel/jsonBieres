@@ -1,7 +1,8 @@
 package fr.wildcodeschool.jsonbiere;
 
+import fr.wildcodeschool.jsonbiere.model.DAOJsonRecherche;
+
 import java.io.IOException;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -12,11 +13,11 @@ import java.util.Map;
  */
 public class App {
     public static void main( String[] args ) throws IOException {
-
-       //recupere toute une biere au hazard
+ /*
+        //recupere toute une biere au hazard
         Biere biere = DAOJsonRecherche.rechercheBiere();
         System.out.println(formatBiere(biere));
- /*
+
         //recupere la biere avec l'id 61
         Biere biere = DAOJsonRecherche.rechercheBiere(61);
         System.out.println(formatBiere(biere));
@@ -29,6 +30,9 @@ public class App {
         List<Biere> listeBiere2 = DAOJsonRecherche.rechercheBiere("Malt", "Extra Pale", 10.0);
         System.out.println(formatListe(listeBiere2));
 */
+        //recupere les bieres contenant le mot beer
+        List<Biere> listeBiere3 = DAOJsonRecherche.rechercheTouteBieres();
+        System.out.println(formatListe(listeBiere3));
 
     }
 

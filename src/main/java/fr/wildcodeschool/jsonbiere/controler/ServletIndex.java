@@ -1,4 +1,6 @@
-package fr.wildcodeschool.jsonbiere;
+package fr.wildcodeschool.jsonbiere.controler;
+
+import fr.wildcodeschool.jsonbiere.model.DAOJsonRecherche;
 
 import javax.servlet.annotation.WebServlet;
 import java.io.IOException;
@@ -11,7 +13,6 @@ public class ServletIndex extends javax.servlet.http.HttpServlet {
     }
 
     protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
-
 
         request.setAttribute("bierea", DAOJsonRecherche.rechercheBiere());
         request.setAttribute("biereb", DAOJsonRecherche.rechercheBiere());

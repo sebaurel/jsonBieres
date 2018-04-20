@@ -13,7 +13,7 @@ public class Biere {
     private Map<String, List<Ingredient>> ingredients;
 
 
-    protected Biere() {
+    public Biere() {
 
     }
 

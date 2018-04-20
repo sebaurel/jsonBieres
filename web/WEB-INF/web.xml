@@ -5,7 +5,7 @@
          version="4.0">
     <servlet>
         <servlet-name>ServletIndex</servlet-name>
-        <servlet-class>fr.wildcodeschool.jsonbiere.ServletIndex</servlet-class>
+        <servlet-class>fr.wildcodeschool.jsonbiere.controler.ServletIndex</servlet-class>
     </servlet>
 
 </web-app>

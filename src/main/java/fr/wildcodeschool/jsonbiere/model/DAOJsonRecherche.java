@@ -1,4 +1,7 @@
-package fr.wildcodeschool.jsonbiere;
+package fr.wildcodeschool.jsonbiere.model;
+
+import fr.wildcodeschool.jsonbiere.Biere;
+import fr.wildcodeschool.jsonbiere.Ingredient;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -82,4 +85,12 @@ public class DAOJsonRecherche {
         }
         return bieresAvecIngredient;
     }
+
+    public static List<Biere> rechercheTouteBieres() throws IOException {
+
+        listeBiere = DAOJsonConnect.recupereLesBieresJson("all");
+
+        return listeBiere;
+    }
+
 }

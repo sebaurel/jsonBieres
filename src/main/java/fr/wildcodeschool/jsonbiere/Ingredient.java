@@ -2,11 +2,11 @@ package fr.wildcodeschool.jsonbiere;
 
 
 
-abstract class Ingredient {
+public abstract class Ingredient {
     private String name;
     private Amount amount;
 
-    protected Ingredient() {
+    public Ingredient() {
     }
 
 

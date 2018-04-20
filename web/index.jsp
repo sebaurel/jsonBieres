@@ -13,7 +13,7 @@
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
         <div class="container">
-            <h1 class="display-3">De la bonne biere</h1>
+            <h1 class="display-3">Good Beers</h1>
             <p> Have you ever wanted to search through Brewdog's expansive back catalogue of beer in a programmatic way? Maybe build a tool that pairs beer with food, or search beers with an abv of more than 4%? Well now your prayers have been answered!<br>
                 <br>
                 The Punk API takes Brewdog's DIY Dog and turns it into a searchable, filterable API that's completely free and open source.</p>
@@ -31,7 +31,7 @@
                     </h3>
                     <div class="mb-1 text-muted">${bierea.firstBrewed}</div>
                     <p class="card-text mb-auto">${bierea.description}</p>
-                    <a href="beer?id=${biere.id}">Continue reading</a>
+                    <a href="beer?id=${bierea.id}">Continue reading</a>
                 </div>
                 <img class="card-img-right flex-auto d-none d-md-block" src="${bierea.image_url}" alt="beer image cap" height="300px">
             </div>
